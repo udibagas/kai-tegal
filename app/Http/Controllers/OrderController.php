@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\OrderRequest;
+use App\Http\Resources\OrderCollection;
 use App\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -15,7 +17,7 @@ class OrderController extends Controller
      */
     public function index(Request $request)
     {
-        return Order::when($request->keyword, function ($q) use ($request) {
+        $resource = Order::when($request->keyword, function ($q) use ($request) {
             $q->where(function ($q) use ($request) {
                 $q->where('nomor', 'LIKE', "%{$request->keyword}%")
                     ->orWhereHas('sarana', function ($q) use ($request) {
@@ -35,6 +37,8 @@ class OrderController extends Controller
         })->when($request->status, function ($q) use ($request) {
             $q->whereIn('status', $request->status);
         })->orderBy('updated_at', 'desc')->paginate($request->pageSize);
+
+        return new OrderCollection($resource);
     }
 
     /**
@@ -43,7 +47,7 @@ class OrderController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(OrderRequest $request)
     {
         $order = Order::create(array_merge($request->all(), [
             'user_id' => auth()->user()->id
@@ -82,7 +86,7 @@ class OrderController extends Controller
      * @param  \App\Order  $order
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Order $order)
+    public function update(OrderRequest $request, Order $order)
     {
         $order->update($request->all());
 

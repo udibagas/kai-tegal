@@ -33,4 +33,17 @@ class OrderRequest extends FormRequest
             'jenis_pekerjaan_id' => 'required',
         ];
     }
+
+    public function attributes()
+    {
+        return [
+            'nomor' => 'Nomor',
+            'tanggal_masuk' => 'Tanggal Masuk',
+            'sarana_id' => 'Sarana',
+            'jenis_sarana_id' => 'Jenis Sarana',
+            'dipo_id' => 'Dipo',
+            'jalur_id' => 'Jalur',
+            'jenis_pekerjaan_id' => 'Jenis Pekerjaan'
+        ];
+    }
 }

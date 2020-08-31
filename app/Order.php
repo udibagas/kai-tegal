@@ -23,7 +23,8 @@ class Order extends Model
         'jenis_pekerjaan_id',
         'prosentase_pekerjaan',
         'status',
-        'user_id'
+        'user_id',
+        'keterangan'
     ];
 
     protected $appends = ['status_label'];
@@ -36,7 +37,7 @@ class Order extends Model
             self::STATUS_SELESAI => 'SELESAI'
         ];
 
-        return $status[$this->status];
+        return isset($status[$this->status]) ? $status[$this->status] : $status[self::STATUS_TERDAFTAR];
     }
 
     public function orderProgress()

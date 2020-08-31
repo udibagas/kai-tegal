@@ -22,6 +22,8 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
 
     Route::get('/menu', 'MenuController@index');
 
+    Route::get('sarana/getList', 'SaranaController@getList');
+
     Route::resource('dipo', 'DipoController')->only(['index', 'store', 'update', 'destroy']);
     Route::resource('jalur', 'JalurController')->only(['index', 'store', 'update', 'destroy']);
     Route::resource('jenisDetailPekerjaan', 'JenisDetailPekerjaanController')->only(['index', 'store', 'update', 'destroy']);

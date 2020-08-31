@@ -1,6 +1,7 @@
 export const state = () => ({
   listDipo: [],
   listJalur: [],
+  listSarana: [],
   listJenisSarana: [],
   listJenisPekerjaan: [],
   listJenisDetailPekerjaan: [],
@@ -56,6 +57,10 @@ export const mutations = {
     state.listJenisDetailPekerjaan = data;
   },
 
+  setListSarana(state, data) {
+    state.listSarana = data;
+  },
+
 }
 
 export const actions = {
@@ -102,5 +107,14 @@ export const actions = {
       data
     } = await this.$axios.get('/api/jenisDetailPekerjaan')
     commit('setListJenisDetailPekerjaan', data)
+  },
+
+  async getListSarana({
+    commit
+  }) {
+    let {
+      data
+    } = await this.$axios.get('/api/sarana/getList')
+    commit('setListSarana', data)
   },
 }

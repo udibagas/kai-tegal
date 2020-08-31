@@ -82,4 +82,11 @@ class SaranaController extends Controller
 
         return ['message' => 'Data telah dihapus'];
     }
+
+    public function getList(Request $request)
+    {
+        return Sarana::when($request->nomor, function ($q) use ($request) {
+            $q->where('nomor', 'LIKE', "%{$request->nomor}%");
+        })->orderBy('nomor', 'asc')->get();
+    }
 }
