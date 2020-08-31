@@ -5,10 +5,14 @@
 			<el-input placeholder="Email" v-model="loginForm.email"></el-input>
 		</el-form-item>
 		<el-form-item>
-			<el-input type="password" placeholder="Password" v-model="loginForm.Password"></el-input>
+			<el-input type="password" placeholder="Password" v-model="loginForm.password"></el-input>
 		</el-form-item>
 		<el-form-item>
-			<el-button type="primary">LOGIN</el-button>
+			<el-button
+				type="primary"
+				@click="login"
+				:disabled="!loginForm.email || !loginForm.password"
+			>LOGIN</el-button>
 		</el-form-item>
 	</el-form>
 </template>
@@ -24,17 +28,19 @@ export default {
 	created() {
 		this.$axios.$get("/sanctum/csrf-cookie");
 	},
-	method: {
+	methods: {
 		login() {
 			this.$auth
-				.loginWith("local")
+				.loginWith("local", {
+					data: this.loginForm,
+				})
 				.then((r) => {
 					this.$router.push(this.$route.query.redirect || "/");
 				})
 				.catch((e) => {
 					if (e.response.status == 422 || e.response.status == 429) {
 						this.$message({
-							message: e.response.data.errors.email[0],
+							message: e.response.data.errors.password[0],
 							type: "error",
 						});
 					}

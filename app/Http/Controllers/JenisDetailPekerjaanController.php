@@ -17,7 +17,7 @@ class JenisDetailPekerjaanController extends Controller
     {
         return JenisDetailPekerjaan::when($request->keyword, function ($q) use ($request) {
             return $q->where('nama', 'LIKE', "%{$request->keyword}%");
-        })->orderBy('name', 'asc')->get();
+        })->orderBy('nama', 'asc')->get();
     }
 
     /**

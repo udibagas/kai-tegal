@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\SaranaRequest;
+use App\Http\Resources\SaranaCollection;
 use App\Sarana;
 use Illuminate\Http\Request;
 
@@ -15,12 +16,14 @@ class SaranaController extends Controller
      */
     public function index(Request $request)
     {
-        return Sarana::when($request->keyword, function ($q) use ($request) {
+        $resource = Sarana::when($request->keyword, function ($q) use ($request) {
             $q->where(function ($q) use ($request) {
                 $q->where('nomor', 'LIKE', "%{$request->keyword}%")
                     ->orWhere('nomor_lama', 'LIKE', "%{$request->keyword}%");
             });
-        })->orderBy('nomor', 'asc')->get();
+        })->orderBy('nomor', 'asc')->paginate($request->pageSize);
+
+        return new SaranaCollection($resource);
     }
 
     /**

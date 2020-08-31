@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UserRequest;
+use App\Http\Resources\UserCollection;
 use App\User;
 use Illuminate\Http\Request;
 
@@ -15,12 +16,14 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-        return User::when($request->keyword, function ($q) use ($request) {
+        $resource = User::when($request->keyword, function ($q) use ($request) {
             $q->where(function ($q) use ($request) {
                 $q->where('name', 'LIKE', "%{$request->keyword}%")
                     ->orWhere('email', 'LIKE', "%{$request->keyword}%");
             });
-        })->get();
+        })->orderBy('name', 'asc')->get();
+
+        return new UserCollection($resource);
     }
 
     /**

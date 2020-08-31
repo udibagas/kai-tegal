@@ -17,7 +17,17 @@ class MenuController extends Controller
             [
                 'label' => 'Order',
                 'path' => '/order',
-                'icon' => 'el-icon-order'
+                'icon' => 'el-icon-s-order'
+            ],
+            [
+                'label' => 'Sarana',
+                'path' => '/sarana',
+                'icon' => 'el-icon-truck'
+            ],
+            [
+                'label' => 'Jenis Sarana',
+                'path' => '/jenis-sarana',
+                'icon' => 'el-icon-collection-tag'
             ],
             [
                 'label' => 'Dipo',
@@ -35,9 +45,9 @@ class MenuController extends Controller
                 'icon' => 'el-icon-s-tools'
             ],
             [
-                'label' => 'Sarana',
-                'path' => '/sarana',
-                'icon' => 'el-icon-truck'
+                'label' => 'Jenis Detail Pekerjaan',
+                'path' => '/jenis-detail-pekerjaan',
+                'icon' => 'el-icon-s-operation'
             ],
             [
                 'label' => 'User',

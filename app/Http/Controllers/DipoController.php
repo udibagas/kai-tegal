@@ -17,7 +17,7 @@ class DipoController extends Controller
     {
         return Dipo::when($request->keyword, function ($q) use ($request) {
             return $q->where('nama', 'LIKE', "%{$request->keyword}%");
-        })->orderBy('name', 'asc')->get();
+        })->orderBy('nama', 'asc')->get();
     }
 
     /**
