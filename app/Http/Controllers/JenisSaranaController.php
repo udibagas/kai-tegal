@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\JenisSaranaRequest;
 use App\JenisSarana;
 use Illuminate\Http\Request;
 
@@ -12,19 +13,11 @@ class JenisSaranaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        return JenisSarana::when($request->keyword, function ($q) use ($request) {
+            $q->where('nama', 'LIKE', "%{$request->keyword}%");
+        })->orderBy('nama', 'asc')->get();
     }
 
     /**
@@ -33,31 +26,14 @@ class JenisSaranaController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(JenisSaranaRequest $request)
     {
-        //
-    }
+        $jenisSarana = JenisSarana::create($request->all());
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\JenisSarana  $jenisSarana
-     * @return \Illuminate\Http\Response
-     */
-    public function show(JenisSarana $jenisSarana)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\JenisSarana  $jenisSarana
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(JenisSarana $jenisSarana)
-    {
-        //
+        return [
+            'message' => 'Data telah disimpan',
+            'data' => $jenisSarana
+        ];
     }
 
     /**
@@ -67,9 +43,14 @@ class JenisSaranaController extends Controller
      * @param  \App\JenisSarana  $jenisSarana
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, JenisSarana $jenisSarana)
+    public function update(JenisSaranaRequest $request, JenisSarana $jenisSarana)
     {
-        //
+        $jenisSarana->update($request->all());
+
+        return [
+            'message' => 'Data telah disimpan',
+            'data' => $jenisSarana
+        ];
     }
 
     /**
@@ -80,6 +61,8 @@ class JenisSaranaController extends Controller
      */
     public function destroy(JenisSarana $jenisSarana)
     {
-        //
+        $jenisSarana->delete();
+
+        return ['message' => 'Data telah dihapus'];
     }
 }

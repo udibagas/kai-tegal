@@ -24,7 +24,8 @@ class DipoRequest extends FormRequest
     public function rules()
     {
         return [
-            'nama' => 'required'
+            'nama' => 'required|max:255',
+            'keterangan' => 'max:255'
         ];
     }
 }

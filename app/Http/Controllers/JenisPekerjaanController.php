@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\JenisPekerjaanRequest;
 use App\JenisPekerjaan;
 use Illuminate\Http\Request;
 
@@ -12,19 +13,11 @@ class JenisPekerjaanController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        return JenisPekerjaan::when($request->keyword, function ($q) use ($request) {
+            $q->where('nama', 'LIKE', "%{$request->keyword}%");
+        })->orderBy('nama', 'asc')->get();
     }
 
     /**
@@ -33,31 +26,14 @@ class JenisPekerjaanController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(JenisPekerjaanRequest $request)
     {
-        //
-    }
+        $jenisPekerjaan = JenisPekerjaan::create($request->all());
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\JenisPekerjaan  $jenisPekerjaan
-     * @return \Illuminate\Http\Response
-     */
-    public function show(JenisPekerjaan $jenisPekerjaan)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\JenisPekerjaan  $jenisPekerjaan
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(JenisPekerjaan $jenisPekerjaan)
-    {
-        //
+        return [
+            'message' => 'Data telah disimpan',
+            'data' => $jenisPekerjaan
+        ];
     }
 
     /**
@@ -67,9 +43,14 @@ class JenisPekerjaanController extends Controller
      * @param  \App\JenisPekerjaan  $jenisPekerjaan
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, JenisPekerjaan $jenisPekerjaan)
+    public function update(JenisPekerjaanRequest $request, JenisPekerjaan $jenisPekerjaan)
     {
-        //
+        $jenisPekerjaan->update($request->all());
+
+        return [
+            'message' => 'Data telah disimpan',
+            'data' => $jenisPekerjaan
+        ];
     }
 
     /**
@@ -80,6 +61,8 @@ class JenisPekerjaanController extends Controller
      */
     public function destroy(JenisPekerjaan $jenisPekerjaan)
     {
-        //
+        $jenisPekerjaan->delete();
+
+        return ['message' => 'Data telah dihapus'];
     }
 }

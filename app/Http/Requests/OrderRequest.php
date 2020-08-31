@@ -24,7 +24,13 @@ class OrderRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'nomor' => 'required|max:255',
+            'tanggal_masuk' => 'required|date',
+            'sarana_id' => 'required',
+            'jenis_sarana_id' => 'required',
+            'dipo_id' => 'required',
+            'jalur_id' => 'required',
+            'jenis_pekerjaan_id' => 'required',
         ];
     }
 }

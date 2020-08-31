@@ -1,6 +1,6 @@
 <template>
 	<el-form style="margin-top: 200px">
-		<h1>KAI BALAI YASA TEGAL</h1>
+		<h4>KAI BALAI YASA TEGAL</h4>
 		<el-form-item>
 			<el-input placeholder="Email" v-model="loginForm.email"></el-input>
 		</el-form-item>

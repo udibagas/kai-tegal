@@ -24,7 +24,8 @@ class JenisSaranaRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'nama' => 'required|max:255',
+            'kode' => 'required|max:255',
         ];
     }
 }

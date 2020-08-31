@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\SaranaRequest;
-use App\Sarana;
+use App\Http\Requests\UserRequest;
+use App\User;
 use Illuminate\Http\Request;
 
-class SaranaController extends Controller
+class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,12 +15,12 @@ class SaranaController extends Controller
      */
     public function index(Request $request)
     {
-        return Sarana::when($request->keyword, function ($q) use ($request) {
+        return User::when($request->keyword, function ($q) use ($request) {
             $q->where(function ($q) use ($request) {
-                $q->where('nomor', 'LIKE', "%{$request->keyword}%")
-                    ->orWhere('nomor_lama', 'LIKE', "%{$request->keyword}%");
+                $q->where('name', 'LIKE', "%{$request->keyword}%")
+                    ->orWhere('email', 'LIKE', "%{$request->keyword}%");
             });
-        })->orderBy('nomor', 'asc')->get();
+        })->get();
     }
 
     /**
@@ -29,54 +29,54 @@ class SaranaController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(SaranaRequest $request)
+    public function store(UserRequest $request)
     {
-        $sarana = Sarana::create($request->all());
+        $user = User::create($request->all());
 
         return [
             'message' => 'Data telah disimpan',
-            'data' => $sarana
+            'data' => $user
         ];
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Sarana  $sarana
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Sarana $sarana)
+    public function show(User $user)
     {
-        return $sarana;
+        return $user;
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Sarana  $sarana
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(SaranaRequest $request, Sarana $sarana)
+    public function update(UserRequest $request, User $user)
     {
-        $sarana->update($request->all());
+        $user->update($request->all());
 
         return [
             'message' => 'Data telah disimpan',
-            'data' => $sarana
+            'data' => $user
         ];
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Sarana  $sarana
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Sarana $sarana)
+    public function destroy(User $user)
     {
-        $sarana->delete();
+        $user->delete();
 
-        return ['message' => 'Data telah dihapus'];
+        return ['message' => 'Data telah dipahus'];
     }
 }

@@ -19,6 +19,7 @@ class CreateSaranasTable extends Migration
             $table->string('nomor_lama')->nullable();
             $table->unsignedBigInteger('jenis_sarana_id');
             $table->unsignedBigInteger('dipo_id');
+            $table->string('keterangan')->nullable();
             $table->timestamps();
         });
     }

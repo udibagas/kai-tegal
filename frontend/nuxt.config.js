@@ -38,6 +38,7 @@ export default {
    ** Global CSS
    */
   css: [
+    '@/assets/sass/app.scss',
     'element-ui/lib/theme-chalk/index.css'
   ],
   /*

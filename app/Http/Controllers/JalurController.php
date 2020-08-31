@@ -12,19 +12,11 @@ class JalurController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        return Jalur::when($request->keyword, function ($q) use ($request) {
+            return $q->where('nama', 'LIKE', "%{$request->keyword}%");
+        })->orderBy('name', 'asc')->get();
     }
 
     /**
@@ -35,7 +27,12 @@ class JalurController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $jalur = Jalur::create($request->all());
+
+        return [
+            'message' => 'Data telah disimpan',
+            'data' => $jalur
+        ];
     }
 
     /**
@@ -46,18 +43,7 @@ class JalurController extends Controller
      */
     public function show(Jalur $jalur)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Jalur  $jalur
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Jalur $jalur)
-    {
-        //
+        return $jalur;
     }
 
     /**
@@ -69,7 +55,12 @@ class JalurController extends Controller
      */
     public function update(Request $request, Jalur $jalur)
     {
-        //
+        $jalur->update($request->all());
+
+        return [
+            'message' => 'Data telah disimpan',
+            'data' => $jalur
+        ];
     }
 
     /**
@@ -80,6 +71,8 @@ class JalurController extends Controller
      */
     public function destroy(Jalur $jalur)
     {
-        //
+        $jalur->delete();
+
+        return ['message' => 'Data telah dihapus'];
     }
 }

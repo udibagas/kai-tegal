@@ -24,7 +24,9 @@ class JenisPekerjaanRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'kode' => 'required|max:255',
+            'nama' => 'required|max:255',
+            'keterangan' => 'max:255'
         ];
     }
 }

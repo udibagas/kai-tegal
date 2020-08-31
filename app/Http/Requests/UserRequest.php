@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class OrderProgressRequest extends FormRequest
+class UserRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,16 +24,9 @@ class OrderProgressRequest extends FormRequest
     public function rules()
     {
         return [
-            'order_id' => 'required',
-            'jenis_detail_pekerjaan' => 'required',
-        ];
-    }
-
-    public function attributes()
-    {
-        return [
-            'order_id' => 'Nomor Order',
-            'jenis_detail_pekerjaan' => 'Jenis detail pekerjaan'
+            'name' => 'required|max:255',
+            'email' => 'required|email|max:255',
+            'password' => 'sometimes|min:8'
         ];
     }
 }

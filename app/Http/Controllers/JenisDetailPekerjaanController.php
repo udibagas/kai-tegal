@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\JenisDetailPekerjaanRequest;
 use App\JenisDetailPekerjaan;
 use Illuminate\Http\Request;
 
@@ -12,19 +13,11 @@ class JenisDetailPekerjaanController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        return JenisDetailPekerjaan::when($request->keyword, function ($q) use ($request) {
+            return $q->where('nama', 'LIKE', "%{$request->keyword}%");
+        })->orderBy('name', 'asc')->get();
     }
 
     /**
@@ -33,31 +26,14 @@ class JenisDetailPekerjaanController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(JenisDetailPekerjaanRequest $request)
     {
-        //
-    }
+        $jenisDetailPekerjaan = JenisDetailPekerjaan::create($request->all());
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\JenisDetailPekerjaan  $jenisDetailPekerjaan
-     * @return \Illuminate\Http\Response
-     */
-    public function show(JenisDetailPekerjaan $jenisDetailPekerjaan)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\JenisDetailPekerjaan  $jenisDetailPekerjaan
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(JenisDetailPekerjaan $jenisDetailPekerjaan)
-    {
-        //
+        return [
+            'message' => 'Data telah disimpan',
+            'data' => $jenisDetailPekerjaan
+        ];
     }
 
     /**
@@ -67,9 +43,14 @@ class JenisDetailPekerjaanController extends Controller
      * @param  \App\JenisDetailPekerjaan  $jenisDetailPekerjaan
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, JenisDetailPekerjaan $jenisDetailPekerjaan)
+    public function update(JenisDetailPekerjaanRequest $request, JenisDetailPekerjaan $jenisDetailPekerjaan)
     {
-        //
+        $jenisDetailPekerjaan->update($request->all());
+
+        return [
+            'message' => 'Data telah disimpan',
+            'data' => $jenisDetailPekerjaan
+        ];
     }
 
     /**
@@ -80,6 +61,6 @@ class JenisDetailPekerjaanController extends Controller
      */
     public function destroy(JenisDetailPekerjaan $jenisDetailPekerjaan)
     {
-        //
+        $jenisDetailPekerjaan->delete();
     }
 }

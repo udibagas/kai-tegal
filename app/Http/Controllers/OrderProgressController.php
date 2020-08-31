@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\OrderProgressRequest;
 use App\OrderProgress;
 use Illuminate\Http\Request;
 
@@ -12,19 +13,11 @@ class OrderProgressController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        return OrderProgress::when($request->order_id, function ($q) use ($request) {
+            return $q->where('order_id', $request->order_id);
+        })->orderBy('created_at', 'desc')->paginate($request->pageSize);
     }
 
     /**
@@ -33,31 +26,18 @@ class OrderProgressController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(OrderProgressRequest $request)
     {
-        //
-    }
+        $orderProgress = OrderProgress::create(array_merge($request->all(), [
+            'user_id' => auth()->user()->id
+        ]));
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\OrderProgress  $orderProgress
-     * @return \Illuminate\Http\Response
-     */
-    public function show(OrderProgress $orderProgress)
-    {
-        //
-    }
+        // TODO: update order detail
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\OrderProgress  $orderProgress
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(OrderProgress $orderProgress)
-    {
-        //
+        return [
+            'message' => 'Data telah disimpan',
+            'data' => $orderProgress
+        ];
     }
 
     /**
@@ -67,9 +47,14 @@ class OrderProgressController extends Controller
      * @param  \App\OrderProgress  $orderProgress
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, OrderProgress $orderProgress)
+    public function update(OrderProgressRequest $request, OrderProgress $orderProgress)
     {
-        //
+        $orderProgress->update($request->all());
+
+        return [
+            'message' => 'Data telah disimpan',
+            'data' => $orderProgress
+        ];
     }
 
     /**
@@ -80,6 +65,8 @@ class OrderProgressController extends Controller
      */
     public function destroy(OrderProgress $orderProgress)
     {
-        //
+        $orderProgress->delete();
+
+        return ['message' => 'Data telah dihapus'];
     }
 }

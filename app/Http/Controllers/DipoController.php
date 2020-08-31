@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Dipo;
+use App\Http\Requests\DipoRequest;
 use Illuminate\Http\Request;
 
 class DipoController extends Controller
@@ -12,19 +13,11 @@ class DipoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        return Dipo::when($request->keyword, function ($q) use ($request) {
+            return $q->where('nama', 'LIKE', "%{$request->keyword}%");
+        })->orderBy('name', 'asc')->get();
     }
 
     /**
@@ -33,9 +26,14 @@ class DipoController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(DipoRequest $request)
     {
-        //
+        $dipo = Dipo::create($request->all());
+
+        return [
+            'message' => 'Data telah disimpan',
+            'data' => $dipo
+        ];
     }
 
     /**
@@ -46,18 +44,7 @@ class DipoController extends Controller
      */
     public function show(Dipo $dipo)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Dipo  $dipo
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Dipo $dipo)
-    {
-        //
+        return $dipo;
     }
 
     /**
@@ -67,9 +54,14 @@ class DipoController extends Controller
      * @param  \App\Dipo  $dipo
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Dipo $dipo)
+    public function update(DipoRequest $request, Dipo $dipo)
     {
-        //
+        $dipo->update($request->all());
+
+        return [
+            'message' => 'Data telah disimpan',
+            'data' => $dipo
+        ];
     }
 
     /**
@@ -80,6 +72,8 @@ class DipoController extends Controller
      */
     public function destroy(Dipo $dipo)
     {
-        //
+        $dipo->delete();
+
+        return ['message' => 'Data telah dihapus'];
     }
 }
