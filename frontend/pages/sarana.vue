@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<div class="d-flex">
-			<h5 class="flex-grow-1">KELOLA DIPO</h5>
+			<h5 class="flex-grow-1">KELOLA SARANA</h5>
 			<el-form inline @submit.native.prevent>
 				<el-form-item>
 					<el-button
@@ -9,7 +9,7 @@
 						type="primary"
 						icon="el-icon-plus"
 						@click="() => { selectedData = {}; showForm = true }"
-					>TAMBAH DIPO</el-button>
+					>TAMBAH SARANA</el-button>
 				</el-form-item>
 				<el-form-item>
 					<el-input
@@ -23,7 +23,7 @@
 				</el-form-item>
 			</el-form>
 		</div>
-		<el-table :data="tableData" height="calc(100vh - 165px)" stripe v-loading="loading">
+		<el-table :data="tableData" height="calc(100vh - 215px)" stripe v-loading="loading">
 			<el-table-column type="index" label="#"></el-table-column>
 			<el-table-column prop="nomor" label="Nomor"></el-table-column>
 			<el-table-column prop="nomor_lama" label="Nomor Lama"></el-table-column>
@@ -52,7 +52,24 @@
 				</template>
 			</el-table-column>
 		</el-table>
-		<DipoForm
+
+		<div class="d-flex mt-3">
+			<el-pagination
+				class="flex-grow-1"
+				background
+				@current-change="(p) => { pagination.page = p; getData(); }"
+				@size-change="(s) => { pagination.pageSize = s; getData(); }"
+				layout="total, sizes, prev, pager, next"
+				:page-size="pagination.pageSize"
+				:page-sizes="[10, 25, 50, 100]"
+				:total="pagination.total"
+			></el-pagination>
+			<div class="text-right">
+				<small>Menampilkan {{pagination.from}} - {{pagination.to}} dari {{pagination.total}}</small>
+			</div>
+		</div>
+
+		<SaranaForm
 			:data="selectedData"
 			:show="showForm"
 			@close-form="showForm = false"
@@ -70,16 +87,24 @@ export default {
 			keyword: "",
 			selectedData: {},
 			showForm: false,
+			pagination: {
+				page: 1,
+				pageSize: 10,
+				from: 0,
+				to: 0,
+				total: 0,
+			},
 		};
 	},
 	methods: {
 		getData() {
-			const params = { keyword: this.keyword };
+			const params = { ...this.pagination, keyword: this.keyword };
 			this.loading = true;
 			this.$axios
-				.get("/api/dipo", { params })
+				.get("/api/sarana", { params })
 				.then((r) => {
-					this.tableData = r.data;
+					this.tableData = r.data.data;
+					this.pagination = r.data.meta;
 				})
 				.finally(() => (this.loading = false));
 		},
@@ -90,7 +115,7 @@ export default {
 				cancelButtonText: "Tidak",
 			})
 				.then(() => {
-					this.$axios.delete(`/api/dipo/${id}`).then((r) => this.getData());
+					this.$axios.delete(`/api/sarana/${id}`).then((r) => this.getData());
 				})
 				.catch((e) => console.log(e));
 		},

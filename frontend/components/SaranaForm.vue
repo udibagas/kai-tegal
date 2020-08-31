@@ -7,13 +7,47 @@
 		:title="!!formModel.id ? 'EDIT SARANA' : 'TAMBAH SARANA'"
 	>
 		<el-form label-position="left" label-width="200px">
-			<el-form-item label="Nama" :class="formError.nama ? 'is-error' : ''">
-				<el-input v-model="formModel.nama" placeholder="Nama"></el-input>
-				<div class="el-form-item__error" v-if="formError.nama">{{formError.nama.join(', ')}}</div>
+			<el-form-item label="Nomor" :class="formError.nomor ? 'is-error' : ''">
+				<el-input v-model="formModel.nomor" placeholder="Nomor"></el-input>
+				<div class="el-form-item__error" v-if="formError.nomor">{{formError.nomor.join(', ')}}</div>
+			</el-form-item>
+
+			<el-form-item label="Nomor Lama" :class="formError.nomor_lama ? 'is-error' : ''">
+				<el-input v-model="formModel.nomor_lama" placeholder="Nomor Lama"></el-input>
+				<div class="el-form-item__error" v-if="formError.nomor_lama">{{formError.nomor_lama.join(', ')}}</div>
+			</el-form-item>
+
+			<el-form-item label="Jenis Sarana" :class="formError.jenis_sarana_id ? 'is-error' : ''">
+				<el-select
+					v-model="formModel.jenis_sarana_id"
+					placeholder="Jenis Sarana"
+					filterable
+					default-first-option
+					style="width:100%"
+				>
+					<el-option v-for="js in listJenisSarana" :key="js.id" :label="js.nama" :value="js.id"></el-option>
+				</el-select>
+				<div
+					class="el-form-item__error"
+					v-if="formError.jenis_sarana_id"
+				>{{formError.jenis_sarana_id.join(', ')}}</div>
+			</el-form-item>
+
+			<el-form-item label="Dipo" :class="formError.dipo_id ? 'is-error' : ''">
+				<el-select
+					v-model="formModel.dipo_id"
+					placeholder="Dipo"
+					filterable
+					default-first-option
+					style="width:100%"
+				>
+					<el-option v-for="dipo in listDipo" :key="dipo.id" :label="dipo.nama" :value="dipo.id"></el-option>
+				</el-select>
+				<div class="el-form-item__error" v-if="formError.dipo_id">{{formError.dipo_id.join(', ')}}</div>
 			</el-form-item>
 
 			<el-form-item label="Keterangan" :class="formError.keterangan ? 'is-error' : ''">
-				<el-input v-model="formModel.keterangan" placeholder="Keterangan"></el-input>
+				<el-input type="textarea" :rows="3" v-model="formModel.keterangan" placeholder="Keterangan"></el-input>
 				<div class="el-form-item__error" v-if="formError.keterangan">{{formError.keterangan.join(', ')}}</div>
 			</el-form-item>
 		</el-form>
@@ -29,12 +63,15 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
+
 export default {
 	props: ["show", "data"],
 	computed: {
 		formModel() {
 			return this.data;
 		},
+		...mapState(["listJenisSarana", "listDipo"]),
 	},
 	data() {
 		return {

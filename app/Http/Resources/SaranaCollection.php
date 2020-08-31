@@ -16,9 +16,9 @@ class SaranaCollection extends ResourceCollection
     {
         return [
             'data' => $this->collection->map(function ($item) {
-                return array_merge($item, [
-                    'depo' => $this->depo->nama,
-                    'jenis_sarana' => $this->jenisSarana->nama
+                return array_merge($item->toArray(), [
+                    'dipo' => $item->dipo->nama,
+                    'jenis_sarana' => $item->jenisSarana->nama
                 ]);
             })
         ];

@@ -54,6 +54,11 @@ export default {
 	},
 	created() {
 		this.getMenu();
+		this.$store.dispatch("getListJenisSarana");
+		this.$store.dispatch("getListJenisPekerjaan");
+		this.$store.dispatch("getListDipo");
+		this.$store.dispatch("getListJalur");
+		this.$store.dispatch("getListJenisDetailPekerjaan");
 	},
 };
 </script>
