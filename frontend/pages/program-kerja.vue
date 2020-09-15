@@ -8,7 +8,6 @@
 				<el-form-item>
 					<el-input
 						type="number"
-						@change="getData"
 						size="small"
 						prefix-icon="el-icon-date"
 						v-model="tahun"
@@ -126,11 +125,17 @@ export default {
 			loading: true,
 			tahun: new Date().getFullYear(),
 			program_kerja: null,
-			target: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 		};
 	},
 	computed: {
 		...mapState(["listJenisPekerjaan", "listJenisSarana"]),
+	},
+	watch: {
+		tahun(v) {
+			if (v.length == 4) {
+				this.getData();
+			}
+		},
 	},
 	methods: {
 		getData() {
@@ -139,16 +144,32 @@ export default {
 			this.$axios
 				.get("/api/programKerja", { params })
 				.then((r) => {
-					// this.target = r.data;
+					this.parseProgramKerja(r.data);
 				})
 				.finally(() => (this.loading = false));
 		},
-		parseProgramKerja() {
+		parseProgramKerja(target = null) {
 			this.program_kerja = this.listJenisSarana.map((s) => {
 				const program = this.listJenisPekerjaan.map((p) => {
+					const defaultTarget = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+					let currentTarget = null;
+
+					if (target) {
+						currentTarget = defaultTarget.map((t, m) => {
+							const x = target.find((tg) => {
+								return (
+									tg.jenis_pekerjaan_id == p.id &&
+									tg.jenis_sarana_id == s.id &&
+									tg.bulan == m
+								);
+							});
+							return x ? x.target : 0;
+						});
+					}
+
 					return {
 						jenis_pekerjaan_id: p.id,
-						target: this.target,
+						target: currentTarget || defaultTarget,
 					};
 				});
 

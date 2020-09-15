@@ -23,12 +23,7 @@ class ProgramKerjaController extends Controller
             $q->where('jenis_sarana_id', $request->jenis_sarana_id);
         })->when($request->jenis_pekerjaan_id, function ($q) use ($request) {
             $q->where('jenis_pekerjaan_id', $request->jenis_pekerjaan_id);
-        })->orderBy('bulan', 'asc')->get()->map(function ($item) {
-            return array_merge($item->toArray(), [
-                'jenis_sarana' => $item->jenis_sarana->kode,
-                'jenis_pekerjaan' => $item->jenis_pekerjaan->kode,
-            ]);
-        });
+        })->orderBy('bulan', 'asc')->get();
     }
 
     /**
@@ -37,57 +32,33 @@ class ProgramKerjaController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(ProgramKerjaRequest $request)
+    public function store(Request $request)
     {
+        ProgramKerja::where('tahun', $request->tahun)->delete();
+
+        $data = [];
+
         foreach ($request->program_kerja as $programKerja) {
             foreach ($programKerja['program'] as $program) {
                 foreach ($program['target'] as $bulan => $target) {
                     if ($bulan == 0) continue;
 
-                    ProgramKerja::create([
+                    $data[] = [
                         'tahun' => $request->tahun,
                         'jenis_sarana_id' => $programKerja['jenis_sarana_id'],
                         'jenis_pekerjaan_id' => $program['jenis_pekerjaan_id'],
                         'bulan' => $bulan,
                         'target' => $target
-                    ]);
+                    ];
                 }
             }
         }
 
-        return [
-            'message' => 'Data telah disimpan',
-            'data' => $programKerja
-        ];
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\ProgramKerja  $programKerja
-     * @return \Illuminate\Http\Response
-     */
-    public function update(ProgramKerjaRequest $request, ProgramKerja $programKerja)
-    {
-        $programKerja->update($request->all());
+        ProgramKerja::insert($data);
 
         return [
             'message' => 'Data telah disimpan',
             'data' => $programKerja
         ];
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\ProgramKerja  $programKerja
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(ProgramKerja $programKerja)
-    {
-        $programKerja->delete();
-
-        return ['message' => 'Data talah dihapus'];
     }
 }
