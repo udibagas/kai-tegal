@@ -1,7 +1,9 @@
 <template>
 	<div>
 		<div class="d-flex">
-			<h5 class="flex-grow-1">KELOLA JENIS DETAIL PEKERJAAN</h5>
+			<div class="flex-grow-1">
+				<el-page-header title @back="$router.go(-1)" content="Kelola Jenis Detail Pekerjaan"></el-page-header>
+			</div>
 			<el-form inline @submit.native.prevent>
 				<el-form-item>
 					<el-button

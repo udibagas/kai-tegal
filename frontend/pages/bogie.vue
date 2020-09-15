@@ -2,7 +2,7 @@
 	<div>
 		<div class="d-flex">
 			<div class="flex-grow-1">
-				<el-page-header title @back="$router.go(-1)" content="Kelola User"></el-page-header>
+				<el-page-header title @back="$router.go(-1)" content="Kelola Bogie"></el-page-header>
 			</div>
 			<el-form inline @submit.native.prevent>
 				<el-form-item>
@@ -11,7 +11,7 @@
 						type="primary"
 						icon="el-icon-plus"
 						@click="() => { selectedData = {}; showForm = true }"
-					>TAMBAH USER</el-button>
+					>TAMBAH BOGIE</el-button>
 				</el-form-item>
 				<el-form-item>
 					<el-input
@@ -19,7 +19,7 @@
 						size="small"
 						prefix-icon="el-icon-search"
 						v-model="keyword"
-						placeholder="Cari user"
+						placeholder="Cari"
 						clearable
 					></el-input>
 				</el-form-item>
@@ -27,8 +27,8 @@
 		</div>
 		<el-table :data="tableData" height="calc(100vh - 165px)" stripe v-loading="loading">
 			<el-table-column type="index" label="#"></el-table-column>
-			<el-table-column prop="name" label="Nama"></el-table-column>
-			<el-table-column prop="email" label="Email"></el-table-column>
+			<el-table-column prop="nama" label="Nama"></el-table-column>
+			<el-table-column prop="kode" label="Kode"></el-table-column>
 			<el-table-column fixed="right" width="40px" align="center" header-align="center">
 				<template slot="header">
 					<el-button type="text" @click="() => { keyword = ''; getData(); }" icon="el-icon-refresh"></el-button>
@@ -52,7 +52,7 @@
 				</template>
 			</el-table-column>
 		</el-table>
-		<UserForm
+		<BogieForm
 			:data="selectedData"
 			:show="showForm"
 			@close-form="showForm = false"
@@ -77,9 +77,9 @@ export default {
 			const params = { keyword: this.keyword };
 			this.loading = true;
 			this.$axios
-				.get("/api/user", { params })
+				.get("/api/bogie", { params })
 				.then((r) => {
-					this.tableData = r.data.data;
+					this.tableData = r.data;
 				})
 				.finally(() => (this.loading = false));
 		},
@@ -90,7 +90,7 @@ export default {
 				cancelButtonText: "Tidak",
 			})
 				.then(() => {
-					this.$axios.delete(`/api/user/${id}`).then((r) => this.getData());
+					this.$axios.delete(`/api/bogie/${id}`).then((r) => this.getData());
 				})
 				.catch((e) => console.log(e));
 		},
@@ -104,6 +104,3 @@ export default {
 	},
 };
 </script>
-
-<style>
-</style>

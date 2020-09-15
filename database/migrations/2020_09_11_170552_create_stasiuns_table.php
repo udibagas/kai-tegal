@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddKeteranganOnOrder extends Migration
+class CreateStasiunsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,11 @@ class AddKeteranganOnOrder extends Migration
      */
     public function up()
     {
-        Schema::table('orders', function (Blueprint $table) {
-            $table->string('keterangan')->nullable();
+        Schema::create('stasiuns', function (Blueprint $table) {
+            $table->id();
+            $table->string('nama');
+            $table->string('kode');
+            $table->timestamps();
         });
     }
 
@@ -25,8 +28,6 @@ class AddKeteranganOnOrder extends Migration
      */
     public function down()
     {
-        Schema::table('orders', function (Blueprint $table) {
-            $table->dropColumn('keterangan');
-        });
+        Schema::dropIfExists('stasiuns');
     }
 }

@@ -26,10 +26,8 @@
 					></i>
 				</div>
 				<div class="brand flex-grow-1">DASHBOARD SARANA BYTG</div>
-				<div>
-					<el-avatar></el-avatar>
-				</div>
-				<div>{{$auth.user.name}}</div>
+				<el-avatar class="mt-2" icon="el-icon-user-solid"></el-avatar>
+				<div class="ml-2">{{$auth.user.name}}</div>
 			</el-header>
 			<el-main>
 				<Nuxt />

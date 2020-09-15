@@ -26,6 +26,7 @@ class CreateOrdersTable extends Migration
             $table->smallInteger('prosentase_pekerjaan')->default(0);
             $table->tinyInteger('status')->default(0);
             $table->unsignedBigInteger('user_id'); // user yg input data
+            $table->string('keterangan')->nullable();
             $table->timestamps();
         });
     }

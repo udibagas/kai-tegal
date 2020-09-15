@@ -15,7 +15,10 @@ class JalurController extends Controller
     public function index(Request $request)
     {
         return Jalur::when($request->keyword, function ($q) use ($request) {
-            return $q->where('nama', 'LIKE', "%{$request->keyword}%");
+            $q->where(function ($q) use ($request) {
+                $q->where('nama', 'LIKE', "%{$request->keyword}%")
+                    ->orWhere('keterangan', 'LIKE', "%{$request->keyword}%");
+            });
         })->orderBy('nama', 'asc')->get();
     }
 

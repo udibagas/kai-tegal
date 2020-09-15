@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\JenisPekerjaanRequest;
-use App\JenisPekerjaan;
+use App\Http\Requests\StasiunRequest;
+use App\Stasiun;
 use Illuminate\Http\Request;
 
-class JenisPekerjaanController extends Controller
+class StasiunController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,10 +15,10 @@ class JenisPekerjaanController extends Controller
      */
     public function index(Request $request)
     {
-        return JenisPekerjaan::when($request->keyword, function ($q) use ($request) {
+        return Stasiun::when($request->keyword, function ($q) use ($request) {
             $q->where(function ($q) use ($request) {
                 $q->where('nama', 'LIKE', "%{$request->keyword}%")
-                    ->orWhere('keterangan', 'LIKE', "%{$request->keyword}%");
+                    ->orWhere('kode', 'LIKE', "%{$request->keyword}%");
             });
         })->orderBy('nama', 'asc')->get();
     }
@@ -29,13 +29,13 @@ class JenisPekerjaanController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(JenisPekerjaanRequest $request)
+    public function store(StasiunRequest $request)
     {
-        $jenisPekerjaan = JenisPekerjaan::create($request->all());
+        $stasiun = Stasiun::create($request->all());
 
         return [
             'message' => 'Data telah disimpan',
-            'data' => $jenisPekerjaan
+            'data' => $stasiun
         ];
     }
 
@@ -43,28 +43,28 @@ class JenisPekerjaanController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\JenisPekerjaan  $jenisPekerjaan
+     * @param  \App\Stasiun  $stasiun
      * @return \Illuminate\Http\Response
      */
-    public function update(JenisPekerjaanRequest $request, JenisPekerjaan $jenisPekerjaan)
+    public function update(StasiunRequest $request, Stasiun $stasiun)
     {
-        $jenisPekerjaan->update($request->all());
+        $stasiun->update($request->all());
 
         return [
             'message' => 'Data telah disimpan',
-            'data' => $jenisPekerjaan
+            'data' => $stasiun
         ];
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\JenisPekerjaan  $jenisPekerjaan
+     * @param  \App\Stasiun  $stasiun
      * @return \Illuminate\Http\Response
      */
-    public function destroy(JenisPekerjaan $jenisPekerjaan)
+    public function destroy(Stasiun $stasiun)
     {
-        $jenisPekerjaan->delete();
+        $stasiun->delete();
 
         return ['message' => 'Data telah dihapus'];
     }

@@ -25,6 +25,8 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::get('sarana/getList', 'SaranaController@getList');
 
     Route::resource('dipo', 'DipoController')->only(['index', 'store', 'update', 'destroy']);
+    Route::resource('bogie', 'BogieController')->only(['index', 'store', 'update', 'destroy']);
+    Route::resource('stasiun', 'StasiunController')->only(['index', 'store', 'update', 'destroy']);
     Route::resource('jalur', 'JalurController')->only(['index', 'store', 'update', 'destroy']);
     Route::resource('jenisDetailPekerjaan', 'JenisDetailPekerjaanController')->only(['index', 'store', 'update', 'destroy']);
     Route::resource('jenisPekerjaan', 'JenisPekerjaanController')->only(['index', 'store', 'update', 'destroy']);
@@ -32,4 +34,8 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::resource('order', 'OrderController')->only(['index', 'show', 'store', 'update', 'destroy']);
     Route::resource('sarana', 'SaranaController')->only(['index', 'store', 'update', 'destroy']);
     Route::resource('user', 'UserController')->only(['index', 'show', 'store', 'update', 'destroy']);
+    Route::resource('programKerja', 'ProgramKerjaController')->only(['index', 'store', 'update']);
 });
+
+Route::get('report/bulanan', 'ReportController@bulanan');
+Route::get('report/tahunan', 'ReportController@tahunan');

@@ -16,7 +16,10 @@ class JenisSaranaController extends Controller
     public function index(Request $request)
     {
         return JenisSarana::when($request->keyword, function ($q) use ($request) {
-            $q->where('nama', 'LIKE', "%{$request->keyword}%");
+            $q->where(function ($q) use ($request) {
+                $q->where('nama', 'LIKE', "%{$request->keyword}%")
+                    ->orWhere('kode', 'LIKE', "%{$request->keyword}%");
+            });
         })->orderBy('nama', 'asc')->get();
     }
 

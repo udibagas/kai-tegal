@@ -20,22 +20,52 @@
 		</div>
 		<el-table :data="tableData" height="calc(100vh - 215px)" stripe v-loading="loading">
 			<el-table-column type="index" label="#"></el-table-column>
-			<el-table-column prop="nomor" label="Nomor Order" min-width="150">
+			<el-table-column label="Status" min-width="100" align-header="center" align="center">
+				<template slot-scope="scope">
+					<el-tag effect="dark" type="error" size="small">{{scope.row.status_label}}</el-tag>
+				</template>
+			</el-table-column>
+			<el-table-column
+				prop="nomor"
+				label="Nomor Order"
+				min-width="120"
+				align-header="center"
+				align="center"
+			>
 				<template slot-scope="scope">
 					<router-link :to="`/order/${scope.row.id}`">{{scope.row.nomor}}</router-link>
 				</template>
 			</el-table-column>
-			<el-table-column prop="tanggal_masuk" label="Tanggal Masuk" min-width="150"></el-table-column>
-			<el-table-column prop="nomor_sarana" label="Nomor Sarana" min-width="150"></el-table-column>
-			<el-table-column prop="jenis_sarana" label="Jenis Sarana" min-width="150"></el-table-column>
-			<el-table-column prop="jenis_pekerjaan" label="Jenis Pekerjaan" min-width="150"></el-table-column>
-			<el-table-column prop="dipo" label="Dipo" min-width="150"></el-table-column>
-			<el-table-column prop="jalur" label="Jalur" min-width="150"></el-table-column>
-			<el-table-column label="Status" min-width="150">
-				<template slot-scope="scope">
-					<el-tag type>{{scope.row.status_label}}</el-tag>
-				</template>
-			</el-table-column>
+			<el-table-column
+				prop="tanggal_masuk"
+				label="Tanggal Masuk"
+				min-width="100"
+				align-header="center"
+				align="center"
+			></el-table-column>
+			<el-table-column
+				prop="nomor_sarana"
+				label="Nomor Sarana"
+				min-width="100"
+				align-header="center"
+				align="center"
+			></el-table-column>
+			<el-table-column
+				prop="jenis_sarana"
+				label="Jenis Sarana"
+				min-width="100"
+				align-header="center"
+				align="center"
+			></el-table-column>
+			<el-table-column
+				prop="jenis_pekerjaan"
+				label="Jenis Pekerjaan"
+				min-width="100"
+				align-header="center"
+				align="center"
+			></el-table-column>
+			<el-table-column prop="dipo" label="Dipo" min-width="100" align-header="center" align="center"></el-table-column>
+			<el-table-column prop="jalur" label="Jalur" min-width="100" align-header="center" align="center"></el-table-column>
 			<el-table-column fixed="right" width="40px" align="center" header-align="center">
 				<template slot="header">
 					<el-button type="text" @click="() => { keyword = ''; getData(); }" icon="el-icon-refresh"></el-button>

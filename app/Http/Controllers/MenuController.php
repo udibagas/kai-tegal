@@ -30,9 +30,19 @@ class MenuController extends Controller
                 'icon' => 'el-icon-collection-tag'
             ],
             [
+                'label' => 'Bogie',
+                'path' => '/bogie',
+                'icon' => 'el-icon-truck'
+            ],
+            [
                 'label' => 'Dipo',
                 'path' => '/dipo',
                 'icon' => 'el-icon-school'
+            ],
+            [
+                'label' => 'Stasiun',
+                'path' => '/stasiun',
+                'icon' => 'el-icon-location-outline'
             ],
             [
                 'label' => 'Jalur',
@@ -48,6 +58,11 @@ class MenuController extends Controller
                 'label' => 'Jenis Detail Pekerjaan',
                 'path' => '/jenis-detail-pekerjaan',
                 'icon' => 'el-icon-s-operation'
+            ],
+            [
+                'label' => 'Program Kerja',
+                'path' => '/program-kerja',
+                'icon' => 'el-icon-date'
             ],
             [
                 'label' => 'User',

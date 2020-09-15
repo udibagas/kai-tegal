@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\JenisPekerjaanRequest;
-use App\JenisPekerjaan;
+use App\Bogie;
+use App\Http\Requests\BogieRequest;
 use Illuminate\Http\Request;
 
-class JenisPekerjaanController extends Controller
+class BogieController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,10 +15,10 @@ class JenisPekerjaanController extends Controller
      */
     public function index(Request $request)
     {
-        return JenisPekerjaan::when($request->keyword, function ($q) use ($request) {
+        return Bogie::when($request->keyword, function ($q) use ($request) {
             $q->where(function ($q) use ($request) {
                 $q->where('nama', 'LIKE', "%{$request->keyword}%")
-                    ->orWhere('keterangan', 'LIKE', "%{$request->keyword}%");
+                    ->orWhere('kode', 'LIKE', "%{$request->keyword}%");
             });
         })->orderBy('nama', 'asc')->get();
     }
@@ -29,13 +29,13 @@ class JenisPekerjaanController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(JenisPekerjaanRequest $request)
+    public function store(BogieRequest $request)
     {
-        $jenisPekerjaan = JenisPekerjaan::create($request->all());
+        $bogie = Bogie::create($request->all());
 
         return [
             'message' => 'Data telah disimpan',
-            'data' => $jenisPekerjaan
+            'data' => $bogie
         ];
     }
 
@@ -43,28 +43,28 @@ class JenisPekerjaanController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\JenisPekerjaan  $jenisPekerjaan
+     * @param  \App\Bogie  $bogie
      * @return \Illuminate\Http\Response
      */
-    public function update(JenisPekerjaanRequest $request, JenisPekerjaan $jenisPekerjaan)
+    public function update(BogieRequest $request, Bogie $bogie)
     {
-        $jenisPekerjaan->update($request->all());
+        $bogie->update($request->all());
 
         return [
             'message' => 'Data telah disimpan',
-            'data' => $jenisPekerjaan
+            'data' => $bogie
         ];
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\JenisPekerjaan  $jenisPekerjaan
+     * @param  \App\Bogie  $bogie
      * @return \Illuminate\Http\Response
      */
-    public function destroy(JenisPekerjaan $jenisPekerjaan)
+    public function destroy(Bogie $bogie)
     {
-        $jenisPekerjaan->delete();
+        $bogie->delete();
 
         return ['message' => 'Data telah dihapus'];
     }

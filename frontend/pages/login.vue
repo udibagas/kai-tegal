@@ -1,20 +1,30 @@
 <template>
-	<el-form style="margin-top: 200px">
-		<h4>KAI BALAI YASA TEGAL</h4>
-		<el-form-item>
-			<el-input placeholder="Email" v-model="loginForm.email"></el-input>
-		</el-form-item>
-		<el-form-item>
-			<el-input type="password" placeholder="Password" v-model="loginForm.password"></el-input>
-		</el-form-item>
-		<el-form-item>
-			<el-button
-				type="primary"
-				@click="login"
-				:disabled="!loginForm.email || !loginForm.password"
-			>LOGIN</el-button>
-		</el-form-item>
-	</el-form>
+	<div class="login-container pl-4 pr-4 text-center" style="width:320px;">
+		<img src="/logo.png" alt />
+		<el-form class="text-center">
+			<h5 class="m-4">Silakan Login</h5>
+			<el-form-item>
+				<el-input prefix-icon="el-icon-user" placeholder="Email" v-model="loginForm.email"></el-input>
+			</el-form-item>
+			<el-form-item>
+				<el-input
+					prefix-icon="el-icon-lock"
+					type="password"
+					placeholder="Password"
+					v-model="loginForm.password"
+				></el-input>
+			</el-form-item>
+			<el-form-item>
+				<el-button
+					type="primary"
+					style="width:100%"
+					@click="login"
+					:disabled="!loginForm.email || !loginForm.password"
+				>LOGIN</el-button>
+			</el-form-item>
+		</el-form>
+		<small>&copy; {{(new Date()).getFullYear()}} - BYTG</small>
+	</div>
 </template>
 
 <script>
@@ -49,3 +59,11 @@ export default {
 	},
 };
 </script>
+
+<style lang="css" scoped>
+.login-container {
+	background-color: #0e5ca9;
+	height: 100vh;
+	color: #fff;
+}
+</style>
