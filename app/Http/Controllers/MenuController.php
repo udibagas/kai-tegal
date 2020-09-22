@@ -29,26 +29,26 @@ class MenuController extends Controller
                 'path' => '/jenis-sarana',
                 'icon' => 'el-icon-collection-tag'
             ],
-            [
-                'label' => 'Bogie',
-                'path' => '/bogie',
-                'icon' => 'el-icon-truck'
-            ],
-            [
-                'label' => 'Dipo',
-                'path' => '/dipo',
-                'icon' => 'el-icon-school'
-            ],
-            [
-                'label' => 'Stasiun',
-                'path' => '/stasiun',
-                'icon' => 'el-icon-location-outline'
-            ],
-            [
-                'label' => 'Jalur',
-                'path' => '/jalur',
-                'icon' => 'el-icon-guide'
-            ],
+            // [
+            //     'label' => 'Bogie',
+            //     'path' => '/bogie',
+            //     'icon' => 'el-icon-truck'
+            // ],
+            // [
+            //     'label' => 'Dipo',
+            //     'path' => '/dipo',
+            //     'icon' => 'el-icon-school'
+            // ],
+            // [
+            //     'label' => 'Stasiun',
+            //     'path' => '/stasiun',
+            //     'icon' => 'el-icon-location-outline'
+            // ],
+            // [
+            //     'label' => 'Jalur',
+            //     'path' => '/jalur',
+            //     'icon' => 'el-icon-guide'
+            // ],
             [
                 'label' => 'Jenis Pekerjaan',
                 'path' => '/jenis-pekerjaan',
