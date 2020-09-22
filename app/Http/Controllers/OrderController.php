@@ -110,7 +110,27 @@ class OrderController extends Controller
      */
     public function update(OrderRequest $request, Order $order)
     {
-        $order->update($request->all());
+        $dipo = Dipo::firstOrCreate(['id' => $request->dipo_id], ['nama' => $request->dipo_id]);
+        $jalur = Jalur::firstOrCreate(['id' => $request->jalur_id], ['nama' => $request->jalur_id]);
+
+        // dikhawatirkan bentrok dengan nomor
+        $sarana = Sarana::find($request->sarana_id);
+
+        // if sarana not registered create new one
+        if (!$sarana) {
+            $sarana = Sarana::firstOrCreate(['nomor' => $request->sarana_id], [
+                'nomor' => $request->sarana_id,
+                'nomor_lama' => $request->nomor_lama,
+                'dipo_id' => $dipo->id,
+                'jenis_sarana_id' => $request->jenis_sarana_id
+            ]);
+        }
+
+        $order->update(array_merge($request->all(), [
+            'dipo_id' => $dipo->id,
+            'sarana_id' => $sarana->id,
+            'jalur_id' => $jalur->id
+        ]));
 
         return [
             'message' => 'Data telah disimpan',
