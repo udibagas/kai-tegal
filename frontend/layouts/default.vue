@@ -26,7 +26,18 @@
 					></i>
 				</div>
 				<div class="brand flex-grow-1">DASHBOARD SARANA BYTG</div>
-				<el-avatar class="mt-2" icon="el-icon-user-solid"></el-avatar>
+				<el-popover placement="bottom" trigger="click">
+					<div slot="reference">
+						<el-avatar class="mt-2" icon="el-icon-user-solid"></el-avatar>
+					</div>
+
+					<div class="text-center p-4">
+						<el-avatar :size="75" icon="el-icon-user-solid"></el-avatar>
+						<h5 class="mt-4 mb-4">{{$auth.user.name.toUpperCase()}}</h5>
+						<el-button icon="el-icon-edit">Edit Profil</el-button>
+						<el-button icon="el-icon-arrow-right" ty>Keluar</el-button>
+					</div>
+				</el-popover>
 				<div class="ml-2">{{$auth.user.name}}</div>
 			</el-header>
 			<el-main>
