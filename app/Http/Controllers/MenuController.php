@@ -54,11 +54,11 @@ class MenuController extends Controller
                 'path' => '/jenis-pekerjaan',
                 'icon' => 'el-icon-s-tools'
             ],
-            [
-                'label' => 'Jenis Detail Pekerjaan',
-                'path' => '/jenis-detail-pekerjaan',
-                'icon' => 'el-icon-s-operation'
-            ],
+            // [
+            //     'label' => 'Jenis Detail Pekerjaan',
+            //     'path' => '/jenis-detail-pekerjaan',
+            //     'icon' => 'el-icon-s-operation'
+            // ],
             [
                 'label' => 'Program Kerja',
                 'path' => '/program-kerja',

@@ -27,7 +27,7 @@ class Order extends Model
         'keterangan'
     ];
 
-    protected $appends = ['status_label'];
+    protected $appends = ['status_label', 'status_type'];
 
     public function getStatusLabelAttribute()
     {
@@ -40,9 +40,20 @@ class Order extends Model
         return isset($status[$this->status]) ? $status[$this->status] : $status[self::STATUS_TERDAFTAR];
     }
 
+    public function getStatusTypeAttribute()
+    {
+        $types = [
+            self::STATUS_TERDAFTAR => 'info',
+            self::STATUS_DALAM_PENGERJAAN => 'primary',
+            self::STATUS_SELESAI => 'success'
+        ];
+
+        return isset($types[$this->status]) ? $types[$this->status] : $types[self::STATUS_TERDAFTAR];
+    }
+
     public function orderProgress()
     {
-        return $this->hasMany(OrderProgress::class);
+        return $this->hasMany(OrderProgress::class)->orderBy('created_at', 'desc');
     }
 
     public function orderDetail()

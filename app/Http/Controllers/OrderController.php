@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Dipo;
 use App\Http\Requests\OrderRequest;
 use App\Http\Resources\OrderCollection;
+use App\Jalur;
 use App\Order;
+use App\Sarana;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -21,7 +24,7 @@ class OrderController extends Controller
             $q->where(function ($q) use ($request) {
                 $q->where('nomor', 'LIKE', "%{$request->keyword}%")
                     ->orWhereHas('sarana', function ($q) use ($request) {
-                        $q->where('nama', 'LIKE', "%{$request->keyword}%");
+                        $q->where('nomor', 'LIKE', "%{$request->keyword}%");
                     });
             });
         })->when($request->tanggal_masuk, function ($q) use ($request) {
@@ -49,8 +52,27 @@ class OrderController extends Controller
      */
     public function store(OrderRequest $request)
     {
+        $dipo = Dipo::firstOrCreate(['id' => $request->dipo_id], ['nama' => $request->dipo_id]);
+        $jalur = Jalur::firstOrCreate(['id' => $request->jalur_id], ['nama' => $request->jalur_id]);
+
+        // dikhawatirkan bentrok dengan nomor
+        $sarana = Sarana::find($request->sarana_id);
+
+        // if sarana not registered create new one
+        if (!$sarana) {
+            $sarana = Sarana::firstOrCreate(['nomor' => $request->sarana_id], [
+                'nomor' => $request->sarana_id,
+                'nomor_lama' => $request->nomor_lama,
+                'dipo_id' => $dipo->id,
+                'jenis_sarana_id' => $request->jenis_sarana_id
+            ]);
+        }
+
         $order = Order::create(array_merge($request->all(), [
-            'user_id' => auth()->user()->id
+            'user_id' => auth()->user()->id,
+            'dipo_id' => $dipo->id,
+            'sarana_id' => $sarana->id,
+            'jalur_id' => $jalur->id
         ]));
 
         return [

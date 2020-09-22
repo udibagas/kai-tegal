@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class OrderDetail extends Model
@@ -13,4 +14,26 @@ class OrderDetail extends Model
         'prosentase_pekerjaan',
         'keterangan'
     ];
+
+    protected $with = ['jenisDetailPekerjaan', 'user'];
+
+    public function getCreatedAtAttribute($value)
+    {
+        return (new Carbon($value))->format('d-M-Y H:i');
+    }
+
+    public function jenisDetailPekerjaan()
+    {
+        return $this->belongsTo(JenisDetailPekerjaan::class);
+    }
+
+    public function order()
+    {
+        return $this->belongsTo(Order::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

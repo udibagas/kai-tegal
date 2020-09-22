@@ -34,8 +34,8 @@
 					<div class="text-center p-4">
 						<el-avatar :size="75" icon="el-icon-user-solid"></el-avatar>
 						<h5 class="mt-4 mb-4">{{$auth.user.name.toUpperCase()}}</h5>
-						<el-button icon="el-icon-edit">Edit Profil</el-button>
-						<el-button icon="el-icon-arrow-right" ty>Keluar</el-button>
+						<el-button icon="el-icon-edit" type="primary">Edit Profil</el-button>
+						<el-button icon="el-icon-d-arrow-right" type="danger" @click="logout">Keluar</el-button>
 					</div>
 				</el-popover>
 				<div class="ml-2">{{$auth.user.name}}</div>
@@ -59,6 +59,10 @@ export default {
 	methods: {
 		getMenu() {
 			this.$axios.get("/api/menu").then((r) => (this.menus = r.data));
+		},
+		logout() {
+			this.$auth.logout();
+			this.$router.push("/login");
 		},
 	},
 	created() {

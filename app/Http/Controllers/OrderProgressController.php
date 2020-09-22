@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\OrderProgressRequest;
+use App\JenisDetailPekerjaan;
 use App\OrderProgress;
 use Illuminate\Http\Request;
 
@@ -28,11 +29,40 @@ class OrderProgressController extends Controller
      */
     public function store(OrderProgressRequest $request)
     {
-        $orderProgress = OrderProgress::create(array_merge($request->all(), [
-            'user_id' => auth()->user()->id
-        ]));
+        if (is_numeric($request->jenis_detail_pekerjaan_id)) {
+            $jenisDetailPekerjaan = JenisDetailPekerjaan::find($request->jenis_detail_pekerjaan_id);
 
-        // TODO: update order detail
+            // kemungkinan ngisi nomor doank
+            if (!$jenisDetailPekerjaan) {
+                return response(['message' => 'Jenis detail pekerjaan tidak ditemukan'], 500);
+            }
+        } else {
+            $jenisDetailPekerjaan = JenisDetailPekerjaan::firstOrCreate(
+                ['nama' => $request->jenis_detail_pekerjaan_id],
+                ['nama' => $request->jenis_detail_pekerjaan_id]
+            );
+        }
+
+        $data = array_merge($request->all(), [
+            'user_id' => auth()->user()->id,
+            'jenis_detail_pekerjaan_id' => $jenisDetailPekerjaan->id // update dengan data yg baru
+        ]);
+
+        $orderProgress = OrderProgress::create($data);
+
+        $order = $orderProgress->order;
+
+        $order->orderDetail()
+            ->updateOrCreate(
+                ['jenis_detail_pekerjaan_id' => $request->jenis_detail_pekerjaan_id],
+                $data
+            );
+
+        $order->update([
+            'status' => $request->status,
+            'tanggal_keluar' => $request->tanggal_keluar,
+            'prosentase_pekerjaan' => $order->orderDetail()->pluck('prosentase_pekerjaan')->avg()
+        ]);
 
         return [
             'message' => 'Data telah disimpan',

@@ -29,11 +29,12 @@
 			<el-form-item label="Nomor Sarana" :class="formError.sarana_id ? 'is-error' : ''">
 				<el-select
 					v-model="formModel.sarana_id"
+					style="width:100%"
+					@change="updateForm"
 					placeholder="Nomor Sarana"
 					filterable
 					default-first-option
-					style="width:100%"
-					@change="updateForm"
+					allow-create
 				>
 					<el-option
 						v-for="sarana in listSarana"
@@ -49,11 +50,16 @@
 				<el-select
 					v-model="formModel.jenis_sarana_id"
 					placeholder="Jenis Sarana"
+					style="width:100%"
 					filterable
 					default-first-option
-					style="width:100%"
 				>
-					<el-option v-for="js in listJenisSarana" :key="js.id" :label="js.nama" :value="js.id"></el-option>
+					<el-option
+						v-for="js in listJenisSarana"
+						:key="js.id"
+						:label="`${js.kode} - ${js.nama}`"
+						:value="js.id"
+					></el-option>
 				</el-select>
 				<div
 					class="el-form-item__error"
@@ -65,9 +71,10 @@
 				<el-select
 					v-model="formModel.dipo_id"
 					placeholder="Dipo"
+					style="width:100%"
 					filterable
 					default-first-option
-					style="width:100%"
+					allow-create
 				>
 					<el-option v-for="dipo in listDipo" :key="dipo.id" :label="dipo.nama" :value="dipo.id"></el-option>
 				</el-select>
@@ -78,9 +85,10 @@
 				<el-select
 					v-model="formModel.jalur_id"
 					placeholder="Jalur"
+					style="width:100%"
 					filterable
 					default-first-option
-					style="width:100%"
+					allow-create
 				>
 					<el-option v-for="jalur in listJalur" :key="jalur.id" :label="jalur.nama" :value="jalur.id"></el-option>
 				</el-select>
@@ -95,7 +103,12 @@
 					default-first-option
 					style="width:100%"
 				>
-					<el-option v-for="jp in listJenisPekerjaan" :key="jp.id" :label="jp.nama" :value="jp.id"></el-option>
+					<el-option
+						v-for="jp in listJenisPekerjaan"
+						:key="jp.id"
+						:label="`${jp.kode} - ${jp.nama}`"
+						:value="jp.id"
+					></el-option>
 				</el-select>
 				<div
 					class="el-form-item__error"
@@ -153,8 +166,11 @@ export default {
 					this.$message({
 						message: r.data.message,
 						type: "success",
-						showClose: true,
 					});
+
+					this.$store.dispatch("getListDipo");
+					this.$store.dispatch("getListSarana");
+					this.$store.dispatch("getListJalur");
 				})
 				.catch((e) => {
 					if (e.response.status == 422) {
@@ -168,7 +184,6 @@ export default {
 					this.$message({
 						message: e.response.data.message,
 						type: "error",
-						showClose: true,
 					});
 				})
 				.finally(() => {
@@ -185,8 +200,11 @@ export default {
 					this.$message({
 						message: r.data.message,
 						type: "success",
-						showClose: true,
 					});
+
+					this.$store.dispatch("getListDipo");
+					this.$store.dispatch("getListSarana");
+					this.$store.dispatch("getListJalur");
 				})
 				.catch((e) => {
 					if (e.response.status == 422) {
@@ -208,7 +226,7 @@ export default {
 				});
 		},
 		updateForm() {
-			const sarana = this.listSarana.filter(
+			const sarana = this.listSarana.find(
 				(s) => s.id == this.formModel.sarana_id
 			);
 

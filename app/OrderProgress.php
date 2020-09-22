@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class OrderProgress extends Model
 {
@@ -14,4 +15,26 @@ class OrderProgress extends Model
         'keterangan',
         'status'
     ];
+
+    protected $with = ['jenisDetailPekerjaan', 'user'];
+
+    public function getCreatedAtAttribute($value)
+    {
+        return (new Carbon($value))->format('d-M-Y H:i');
+    }
+
+    public function order()
+    {
+        return $this->belongsTo(Order::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function jenisDetailPekerjaan()
+    {
+        return $this->belongsTo(JenisDetailPekerjaan::class);
+    }
 }

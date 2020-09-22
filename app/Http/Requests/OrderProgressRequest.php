@@ -25,7 +25,10 @@ class OrderProgressRequest extends FormRequest
     {
         return [
             'order_id' => 'required',
-            'jenis_detail_pekerjaan' => 'required',
+            'jenis_detail_pekerjaan_id' => 'required',
+            'prosentase_pekerjaan' => 'required|numeric',
+            'status' => 'required',
+            'tanggal_keluar' => 'required_if:status,20'
         ];
     }
 
@@ -33,7 +36,16 @@ class OrderProgressRequest extends FormRequest
     {
         return [
             'order_id' => 'Nomor Order',
-            'jenis_detail_pekerjaan' => 'Jenis detail pekerjaan'
+            'jenis_detail_pekerjaan_id' => 'Jenis detail pekerjaan',
+            'prosentase_pekerjaan' => 'Prosentase pekerjaan',
+            'status' => 'Status'
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'tanggal_keluar.required_if' => 'Tanggal keluar harus diisi jika status order Selesai'
         ];
     }
 }

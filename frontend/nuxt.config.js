@@ -97,7 +97,7 @@ export default {
           },
           logout: {
             url: '/logout',
-            method: 'get'
+            method: 'post'
           },
           user: {
             url: '/api/me',

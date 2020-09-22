@@ -12,7 +12,7 @@
 
 <style lang="css" scoped>
 .bg {
-	background-image: url("/bg.jpg");
+	background-image: url("/bg.jpeg");
 	background-repeat: no-repeat;
 	background-size: cover;
 	/* color: #0e5ca9; */

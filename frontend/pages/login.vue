@@ -1,6 +1,6 @@
 <template>
 	<div class="login-container pl-4 pr-4 text-center" style="width:320px;">
-		<img src="/logo.png" alt />
+		<img :src="`${base}logo.png`" alt />
 		<el-form class="text-center">
 			<h5 class="m-4">Silakan Login</h5>
 			<el-form-item>
@@ -33,6 +33,7 @@ export default {
 	data() {
 		return {
 			loginForm: {},
+			base: process.env.ROUTER_BASE || "/",
 		};
 	},
 	created() {

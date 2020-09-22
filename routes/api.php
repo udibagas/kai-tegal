@@ -35,6 +35,8 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::resource('sarana', 'SaranaController')->only(['index', 'store', 'update', 'destroy']);
     Route::resource('user', 'UserController')->only(['index', 'show', 'store', 'update', 'destroy']);
     Route::resource('programKerja', 'ProgramKerjaController')->only(['index', 'store']);
+
+    Route::resource('orderProgress', 'OrderProgressController')->only(['store']);
 });
 
 Route::get('report/bulanan', 'ReportController@bulanan');

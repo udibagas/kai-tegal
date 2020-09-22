@@ -1,7 +1,9 @@
 <template>
 	<div>
 		<div class="d-flex">
-			<h5 class="flex-grow-1">KELOLA ORDER</h5>
+			<div class="flex-grow-1">
+				<el-page-header title @back="$router.go(-1)" content="Kelola Order"></el-page-header>
+			</div>
 			<el-form inline @submit.native.prevent>
 				<el-form-item>
 					<el-button size="small" type="primary" icon="el-icon-plus" @click="openForm(null)">TAMBAH ORDER</el-button>
@@ -20,9 +22,14 @@
 		</div>
 		<el-table :data="tableData" height="calc(100vh - 215px)" stripe v-loading="loading">
 			<el-table-column type="index" label="#"></el-table-column>
-			<el-table-column label="Status" min-width="100" align-header="center" align="center">
+			<el-table-column label="Status" min-width="160" align-header="center" align="center">
 				<template slot-scope="scope">
-					<el-tag effect="dark" type="error" size="small">{{scope.row.status_label}}</el-tag>
+					<el-tag
+						effect="dark"
+						:type="scope.row.status_type"
+						size="small"
+						style="width:100%"
+					>{{scope.row.status_label}}</el-tag>
 				</template>
 			</el-table-column>
 			<el-table-column
@@ -39,31 +46,39 @@
 			<el-table-column
 				prop="tanggal_masuk"
 				label="Tanggal Masuk"
-				min-width="100"
+				min-width="150"
+				align-header="center"
+				align="center"
+			></el-table-column>
+			<el-table-column
+				prop="tanggal_keluar"
+				label="Tanggal Keluar"
+				min-width="150"
 				align-header="center"
 				align="center"
 			></el-table-column>
 			<el-table-column
 				prop="nomor_sarana"
 				label="Nomor Sarana"
-				min-width="100"
+				min-width="120"
 				align-header="center"
 				align="center"
 			></el-table-column>
 			<el-table-column
 				prop="jenis_sarana"
 				label="Jenis Sarana"
-				min-width="100"
+				min-width="120"
 				align-header="center"
 				align="center"
 			></el-table-column>
 			<el-table-column
 				prop="jenis_pekerjaan"
 				label="Jenis Pekerjaan"
-				min-width="100"
+				min-width="130"
 				align-header="center"
 				align="center"
 			></el-table-column>
+			<el-table-column prop="keterangan" label="Keterangan" min-width="150px"></el-table-column>
 			<el-table-column prop="dipo" label="Dipo" min-width="100" align-header="center" align="center"></el-table-column>
 			<el-table-column prop="jalur" label="Jalur" min-width="100" align-header="center" align="center"></el-table-column>
 			<el-table-column fixed="right" width="40px" align="center" header-align="center">
