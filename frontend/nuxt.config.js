@@ -1,6 +1,6 @@
 export default {
-  env: {
-    baseUrl: process.env.BASE_URL || 'http://localhost:3000'
+  router: {
+    base: process.env.BASE_ROUTER || '/'
   },
   /*
    ** Nuxt rendering mode
